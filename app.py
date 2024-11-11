@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file, send_from_directory
 import sqlite3
 
 app = Flask(__name__)
@@ -16,6 +16,11 @@ def init_db():
     )
     conn.commit()
     conn.close()
+
+
+@app.route("/")
+def index():
+    return send_file("index.html")
 
 
 @app.route("/praise", methods=["POST"])
