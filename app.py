@@ -1,8 +1,14 @@
-from flask import Flask, request, jsonify, send_file, send_from_directory
+import os
 import sqlite3
+from flask import Flask, request, jsonify, send_file, abort
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 DATABASE = "database.db"
+
+env = load_dotenv()
+SECRET_TOKEN = os.getenv("SECRET_TOKEN")
 
 
 def init_db():
@@ -45,6 +51,10 @@ def create_post():
 
 @app.route("/praises", methods=["GET"])
 def get_posts():
+    auth_token = request.headers.get("Authorization")
+    if auth_token != SECRET_TOKEN:
+        abort(403)
+
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM posts")
