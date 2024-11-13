@@ -54,9 +54,10 @@ def create_post_but_for_losers():
     a = request.form.get("a")
     b = request.form.get("b")
     c = request.form.get("c")
+    d = request.form.get("action")
 
     # WONTFIX cause funny
-    content = f"{a} {b} {c}".strip()
+    content = f"{a} {b} {c} {d}".strip()
 
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
