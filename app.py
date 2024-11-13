@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from flask import Flask, request, jsonify, send_file, abort
+from flask import Flask, redirect, request, jsonify, send_file, abort
 from dotenv import load_dotenv
 
 
@@ -47,6 +47,24 @@ def create_post():
     conn.close()
 
     return jsonify({"id": post_id, "content": content}), 201
+
+
+@app.route("/praise-with-presets", methods=["POST"])
+def create_post_but_for_losers():
+    a = request.form.get("a")
+    b = request.form.get("b")
+    c = request.form.get("c")
+
+    # WONTFIX cause funny
+    content = f"{a} {b} {c}".strip()
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO posts (content) VALUES (?)", (content,))
+    conn.commit()
+    conn.close()
+
+    return redirect("/")
 
 
 @app.route("/praises", methods=["GET"])
