@@ -1,10 +1,10 @@
 import os
 import sqlite3
-from flask import Flask, redirect, request, jsonify, send_file, abort
+from flask import Flask, redirect, request, jsonify, abort
 from dotenv import load_dotenv
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static")
 DATABASE = "database.db"
 
 env = load_dotenv()
@@ -26,7 +26,7 @@ def init_db():
 
 @app.route("/")
 def index():
-    return send_file("index.html")
+    return app.send_static_file("index.html")
 
 
 @app.route("/praise", methods=["POST"])
