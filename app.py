@@ -65,7 +65,7 @@ def create_post_but_for_losers():
     conn.commit()
     conn.close()
 
-    return redirect("/")
+    return redirect("/thank-you.html")
 
 
 @app.route("/praises", methods=["GET"])
