@@ -4,7 +4,7 @@ from flask import Flask, redirect, request, jsonify, abort
 from dotenv import load_dotenv
 
 
-app = Flask(__name__, static_url_path="/static")
+app = Flask(__name__, static_url_path="/", static_folder="static")
 DATABASE = "database.db"
 
 env = load_dotenv()
