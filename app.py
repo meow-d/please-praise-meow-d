@@ -1,7 +1,8 @@
 import os
 import sqlite3
-from flask import Flask, redirect, request, jsonify, abort
 from dotenv import load_dotenv
+from flask import Flask, redirect, request, jsonify, abort
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__, static_url_path="/", static_folder="static")
@@ -81,6 +82,18 @@ def get_posts():
     conn.close()
 
     return jsonify(posts), 200
+
+
+@app.route("/draw", methods=["POST"])
+def create_draw():
+    image = request.form.get("image")
+    if not image:
+        return jsonify({"error": "Image is required"}), 400
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    return redirect(request.url)
 
 
 if __name__ == "__main__":
