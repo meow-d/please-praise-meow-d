@@ -19,6 +19,9 @@
         #draw-canvas {
             display: block;
             border: 1px solid black;
+            max-width: 100%;
+            max-height: 400px;
+            aspect-ratio: 1;
         }
 
         .buttons {
@@ -37,6 +40,7 @@
             display: grid;
             gap: 1em;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
         }
 
         .draw-display>* {
@@ -62,7 +66,7 @@
 
         <script src="draw.js"></script>
         <form id="image-form" action="/draw" method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" id="image-input" style="display:none">
+            <input type="file" name="image" id="imageInput" style="display:none">
             <button type="submit" style="display:none"></button>
         </form>
     </section>
