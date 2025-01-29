@@ -9,6 +9,7 @@ ALLOWED_EXTENSIONS = {"png", "webp"}
 
 env = load_dotenv()
 SECRET_TOKEN = os.getenv("SECRET_TOKEN")
+PRODUCTION = os.getenv("PRODUCTION")
 
 app = Flask(
     __name__, static_url_path="/", static_folder="static", template_folder="static"
@@ -123,4 +124,5 @@ def create_draw():
 
 if __name__ == "__main__":
     init_db()
-    app.run(host="0.0.0.0", port=3000)
+    if PRODUCTION != "true":
+        app.run(host="0.0.0.0", port=3000)
