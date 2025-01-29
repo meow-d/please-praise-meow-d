@@ -114,6 +114,7 @@ def create_draw():
     cursor.execute("INSERT INTO draws DEFAULT VALUES")
     id = cursor.lastrowid
 
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     path = os.path.join(app.config["UPLOAD_FOLDER"], f"{id}.png")
     image.save(path)
     conn.commit()
