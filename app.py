@@ -1,7 +1,9 @@
 import os
+import subprocess
 import sqlite3
 from dotenv import load_dotenv
 from flask import Flask, redirect, request, jsonify, abort, render_template
+from flask_talisman import Talisman
 
 
 DATABASE = "database.db"
@@ -9,7 +11,7 @@ ALLOWED_EXTENSIONS = {"png", "webp"}
 
 env = load_dotenv()
 SECRET_TOKEN = os.getenv("SECRET_TOKEN")
-PRODUCTION = os.getenv("PRODUCTION")
+ENV = os.getenv("ENV")
 
 app = Flask(
     __name__, static_url_path="/", static_folder="static", template_folder="static"
@@ -125,5 +127,8 @@ def create_draw():
 
 if __name__ == "__main__":
     init_db()
-    if PRODUCTION != "true":
+    if ENV == "production":
+        Talisman(app, force_https=True)
+        subprocess.run(["gunicorn", "-w", "4", "-b", "0.0.0.0:3000", "app:app"])
+    else:
         app.run(host="0.0.0.0", port=3000)

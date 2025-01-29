@@ -1,3 +1,4 @@
 Flask
 gunicorn>=20.0.4
+flask_talisman
 python-dotenv
