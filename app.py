@@ -1,15 +1,20 @@
 import os
 import sqlite3
 from dotenv import load_dotenv
-from flask import Flask, redirect, request, jsonify, abort
-from werkzeug.utils import secure_filename
+from flask import Flask, redirect, request, jsonify, abort, render_template
 
 
-app = Flask(__name__, static_url_path="/", static_folder="static")
 DATABASE = "database.db"
+ALLOWED_EXTENSIONS = {"png", "webp"}
 
 env = load_dotenv()
 SECRET_TOKEN = os.getenv("SECRET_TOKEN")
+
+app = Flask(
+    __name__, static_url_path="/", static_folder="static", template_folder="static"
+)
+app.config["UPLOAD_FOLDER"] = "static/draws/"
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1000 * 1000
 
 
 def init_db():
@@ -17,9 +22,14 @@ def init_db():
     cursor = conn.cursor()
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS posts (
-                      id INTEGER PRIMARY KEY AUTOINCREMENT,
-                      content TEXT NOT NULL
-                    )"""
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            content TEXT NOT NULL
+        )"""
+    )
+    cursor.execute(
+        """CREATE TABLE IF NOT EXISTS draws (
+            id INTEGER PRIMARY KEY AUTOINCREMENT
+        )"""
     )
     conn.commit()
     conn.close()
@@ -84,14 +94,29 @@ def get_posts():
     return jsonify(posts), 200
 
 
-@app.route("/draw", methods=["POST"])
+@app.route("/draw", methods=["GET", "POST"])
 def create_draw():
-    image = request.form.get("image")
-    if not image:
-        return jsonify({"error": "Image is required"}), 400
+    if request.method == "GET":
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM draws")
+        images = cursor.fetchall()
+        conn.close()
+        return render_template("draw.html", images=images)
+
+    if "image" not in request.files:
+        return jsonify({"error": "Content is requried"}, 400)
+    image = request.files["image"]
 
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
+    cursor.execute("INSERT INTO draws DEFAULT VALUES")
+    id = cursor.lastrowid
+
+    path = os.path.join(app.config["UPLOAD_FOLDER"], f"{id}.png")
+    image.save(path)
+    conn.commit()
+    conn.close()
 
     return redirect(request.url)
 

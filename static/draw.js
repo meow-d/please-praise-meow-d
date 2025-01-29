@@ -49,10 +49,14 @@ function saveImage() {
 }
 
 function submitImage() {
-    const form = document.getElementById("draw-form")
-    const input = document.getElementById("image-input")
+    const formData = new FormData()
 
-    const dataURL = canvas.toDataURL()
-    input.value = dataURL
-    form.submit()
+    canvas.toBlob((image) => {
+        formData.append("image", image)
+        fetch("/draw", {
+            method: "post",
+            body: formData
+        })
+        location.reload()
+    })
 }

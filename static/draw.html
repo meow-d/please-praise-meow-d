@@ -32,6 +32,19 @@
             font-size: 1em;
             cursor: pointer;
         }
+
+        .draw-display {
+            display: grid;
+            gap: 1em;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .draw-display>* {
+            border: 1px solid rgba(1, 1, 1, 0.2);
+            aspect-ratio: 1/1;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -46,12 +59,17 @@
             <button id="save-button" onclick="saveImage()">Download</button>
             <button id="submit-button" onclick="submitImage()">Submit!!</button>
         </div>
+        <script src="draw.js"></script>
     </section>
 
-    <script src="draw.js"></script>
-    <form action="/draw" id="draw-form">
-        <input type="hidden" name="image" id="image-input">
-    </form>
+    <section>
+        <h2>submssions</h2>
+        <div class="draw-display">
+            {% for image in images %}
+            <img src="/draws/{{image[0]}}.png" alt="">
+            {% endfor %}
+        </div>
+    </section>
 </body>
 
 </html>
