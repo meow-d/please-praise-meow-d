@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw something for meow-d</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        #draw-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1em;
+            width: fit-content;
+        }
+
+        #draw-canvas {
+            display: block;
+            border: 1px solid black;
+        }
+
+        .buttons {
+            width: 100%;
+            display: flex;
+            gap: 0.5em;
+        }
+
+        .buttons button {
+            padding: 0.25em 0.5em;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>draw something for me!!</h1>
+    <section id="draw-section">
+        <canvas id="draw-canvas" width="400" height="400"></canvas>
+
+        <div class="buttons">
+            <button id="clear-button" onclick="clearCanvas()">Clear</button>
+            <span class="spacer"></span>
+            <button id="save-button" onclick="saveImage()">Download</button>
+            <button id="submit-button" onclick="submitImage()">Submit!!</button>
+        </div>
+    </section>
+
+    <script src="draw.js"></script>
+    <form action="/draw" id="draw-form">
+        <input type="hidden" name="image" id="image-input">
+    </form>
+</body>
+
+</html>
