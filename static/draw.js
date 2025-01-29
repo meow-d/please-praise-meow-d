@@ -49,14 +49,12 @@ function saveImage() {
 }
 
 function submitImage() {
-    const formData = new FormData()
-
     canvas.toBlob((image) => {
-        formData.append("image", image)
-        fetch("/draw", {
-            method: "post",
-            body: formData
-        })
-        location.reload()
+        const input = document.getElementById("image-input");
+        const file = new File([image], "image.png", { type: "image/png" });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        input.files = dataTransfer.files;
+        document.getElementById("image-form").submit();
     })
 }

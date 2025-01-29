@@ -106,7 +106,7 @@ def create_draw():
         return render_template("draw.html", images=images)
 
     if "image" not in request.files:
-        return jsonify({"error": "Content is requried"}, 400)
+        return jsonify({"error": "Content is requried"}), 400
     image = request.files["image"]
 
     conn = sqlite3.connect(DATABASE)

@@ -59,7 +59,12 @@
             <button id="save-button" onclick="saveImage()">Download</button>
             <button id="submit-button" onclick="submitImage()">Submit!!</button>
         </div>
+
         <script src="draw.js"></script>
+        <form id="image-form" action="/draw" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" id="image-input" style="display:none">
+            <button type="submit" style="display:none"></button>
+        </form>
     </section>
 
     <section>
